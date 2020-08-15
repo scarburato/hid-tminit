@@ -17,6 +17,46 @@
 #include <linux/module.h>
 #include "hid-tminit.h"
 
+/**
+ * On some setups initializing the T300RS crashes the kernel,
+ * these interrupts fix that particular issue. So far they haven't caused any
+ * adverse effects in other wheels.
+ */
+static void tminit_interrupts(struct hid_device *hdev){
+        int ret, trans, i, b_ep;
+        u8 *send_buf = kmalloc(256, GFP_KERNEL);
+        struct usb_host_endpoint *ep;
+        struct device *dev = &hdev->dev;
+        struct usb_interface *usbif = to_usb_interface(dev->parent);
+        struct usb_device *usbdev = interface_to_usbdev(usbif);
+
+        if(!send_buf){
+            hid_err(hdev, "failed allocating send buffer\n");
+            return;
+        }
+
+        ep = &usbif->cur_altsetting->endpoint[1];
+        b_ep = ep->desc.bEndpointAddress;
+
+        for(i = 0; i < ARRAY_SIZE(setup_arr); ++i){
+            memcpy(send_buf, setup_arr[i], setup_arr_sizes[i]);
+
+            ret = usb_interrupt_msg(usbdev,
+                    usb_sndintpipe(usbdev, b_ep),
+                    send_buf,
+                    setup_arr_sizes[i],
+                    &trans,
+                    USB_CTRL_SET_TIMEOUT);
+
+            if(ret){
+                hid_err(hdev, "setup data couldn't be sent\n");
+                return;
+            }
+        }
+
+        kzfree(send_buf);
+}
+
 static void tminit_change_handler(struct urb *urb)
 {
 	struct hid_device *hdev = urb->context;
@@ -27,6 +67,8 @@ static void tminit_change_handler(struct urb *urb)
 	else
 		hid_err(hdev, "URB to change wheel mode failed with error %d\n", urb->status);
 }
+
+
 
 /**
  * Called by the USB subsystem when the wheel respons to our request
@@ -166,10 +208,12 @@ static int tminit_probe(struct hid_device *hdev, const struct hid_device_id *id)
 	tm_wheel->usb_dev = interface_to_usbdev(to_usb_interface(hdev->dev.parent));
 	hid_set_drvdata(hdev, tm_wheel);
 
+        tminit_interrupts(hdev);
+
 	usb_fill_control_urb(
 		tm_wheel->urb,
 		tm_wheel->usb_dev,
-		usb_sndctrlpipe(tm_wheel->usb_dev, 0),
+		usb_rcvctrlpipe(tm_wheel->usb_dev, 0),
 		(char*)tm_wheel->model_request,
 		tm_wheel->response,
 		sizeof(struct tm_wheel_response),
