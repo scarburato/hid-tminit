@@ -228,3 +228,5 @@ module_exit(tminit_exit);
 
 MODULE_AUTHOR("Dario Pagani <>");
 MODULE_LICENSE("GPL");
+MODULE_DESCRIPTION("Driver to initialize Thrustmaster\'s wheels");
+
