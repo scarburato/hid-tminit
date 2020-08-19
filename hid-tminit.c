@@ -62,10 +62,10 @@ static void tminit_change_handler(struct urb *urb)
 	struct hid_device *hdev = urb->context;
 
 	// The wheel seems to kill himself before answering the host and therefore is violating the USB protocol...
-	if(urb->status == 0 || urb->status == -EPROTO)
+	if(urb->status == 0 || urb->status == -EPROTO || urb->status == -EPIPE)
 		hid_info(hdev, "Success?! The wheel should have been initialized!\n");
 	else
-		hid_err(hdev, "URB to change wheel mode failed with error %d\n", urb->status);
+		hid_warn(hdev, "URB to change wheel mode seems to have failed with error %d\n", urb->status);
 }
 
 
