@@ -54,7 +54,7 @@ static void tminit_interrupts(struct hid_device *hdev){
 		}
 	}
 
-	kzfree(send_buf);
+	kfree(send_buf);
 }
 
 static void tminit_change_handler(struct urb *urb)
@@ -135,10 +135,10 @@ static void tminit_remove(struct hid_device *hdev)
 
 	usb_kill_urb(tm_wheel->urb);
 
-	kzfree(tm_wheel->response);
-	kzfree(tm_wheel->model_request);
+	kfree(tm_wheel->response);
+	kfree(tm_wheel->model_request);
 	usb_free_urb(tm_wheel->urb);
-	kzfree(tm_wheel);
+	kfree(tm_wheel);
 
 	hid_hw_stop(hdev);
 }
@@ -227,10 +227,10 @@ static int tminit_probe(struct hid_device *hdev, const struct hid_device_id *id)
 
 	return ret;
 
-error5: kzfree(tm_wheel->response);
-error4:	kzfree(tm_wheel->model_request);
+error5: kfree(tm_wheel->response);
+error4:	kfree(tm_wheel->model_request);
 error3:	usb_free_urb(tm_wheel->urb);
-error2:	kzfree(tm_wheel);
+error2:	kfree(tm_wheel);
 error1:	hid_hw_stop(hdev);
 error0:
 	return ret; 
