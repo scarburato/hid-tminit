@@ -1,8 +1,9 @@
 obj-m += hid-tminit.o
+KDIR ?= /lib/modules/$(shell uname -r)/build
 
 all:
-	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules
+	make -C $(KDIR) M=$(shell pwd) modules
 install:
-	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) modules_install
+	make -C $(KDIR) M=$(shell pwd) modules_install
 clean:
-	make -C /lib/modules/$(shell uname -r)/build M=$(shell pwd) clean
+	make -C $(KDIR) M=$(shell pwd) clean
