@@ -11,6 +11,7 @@
  * "Thrustmaster FFB Wheel" really is and then sends the appropriate control code.
  *
  * Copyright (c) 2020-2021 Dario Pagani <dario.pagani.146+linuxk@gmail.com>
+ * Copyright (c) 2020-2021 Kim Kuparinen <kimi.h.kuparinen@gmail.com>
  */
 #include <linux/hid.h>
 #include <linux/usb.h>
