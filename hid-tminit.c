@@ -73,7 +73,7 @@ static void tminit_change_handler(struct urb *urb)
 }
 
 /**
- * Called by the USB subsystem when the wheel respons to our request
+ * Called by the USB subsystem when the wheel responses to our request
  * to get [what it seems to be] the wheel's model.
  *
  * If the model id is recognized then we send an opportune USB CONTROL REQUEST
