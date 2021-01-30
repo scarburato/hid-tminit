@@ -29,7 +29,7 @@ static const unsigned int setup_arr_sizes[] = {
 struct tm_wheel_info {
 	uint16_t wheel_type;
 
-	/** 
+	/**
 	 * See when the USB control out packet is prepared...
 	 * @TODO The TMX seems to require multiple control codes to switch.
 	 */
@@ -39,7 +39,7 @@ struct tm_wheel_info {
 };
 
 /**
- * Known wheels. 
+ * Known wheels.
  * Note: TMX does not work as it requires 2 control packets
  */
 static const struct tm_wheel_info tm_wheels_infos[] = {
