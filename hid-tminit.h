@@ -26,7 +26,7 @@ static const unsigned int setup_arr_sizes[] = {
  * must be used when preparing USB packets
  * and vice-versa
  */
-struct th_wheel_info {
+struct tm_wheel_info {
 	uint16_t wheel_type;
 
 	/** 
@@ -42,7 +42,7 @@ struct th_wheel_info {
  * Known wheels. 
  * Note: TMX does not work as it requires 2 control packets
  */
-static const struct th_wheel_info th_wheels_infos[] = {
+static const struct tm_wheel_info tm_wheels_infos[] = {
 	{0x0306, 0x0006, "Thrustmaster T150RS"},
 	{0x0206, 0x0005, "Thrustmaster T300RS"},
 	{0x0204, 0x0005, "Thrustmaster T300 Ferrari Alcantara Edition"},
@@ -50,7 +50,7 @@ static const struct th_wheel_info th_wheels_infos[] = {
 	{0x0407, 0x0001, "Thrustmaster TMX"}
 };
 
-static const uint8_t th_wheels_infos_length = 5;
+static const uint8_t tm_wheels_infos_length = 5;
 
 /**
  * This structs contains (in little endian) the response data

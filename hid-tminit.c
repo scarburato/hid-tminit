@@ -85,7 +85,7 @@ static void tminit_model_handler(struct urb *urb)
 	struct tm_wheel *tm_wheel = hid_get_drvdata(hdev);
 	uint16_t model = 0;
 	int i, ret;
-	const struct th_wheel_info *twi = 0;
+	const struct tm_wheel_info *twi = 0;
 
 	if (urb->status) {
 		hid_err(hdev, "URB to get model id failed with error %d\n", urb->status);
@@ -101,9 +101,9 @@ static void tminit_model_handler(struct urb *urb)
 		return;
 	}
 
-	for (i = 0; i < th_wheels_infos_length && !twi; i++)
-		if (th_wheels_infos[i].wheel_type == model)
-			twi = th_wheels_infos + i;
+	for (i = 0; i < tm_wheels_infos_length && !twi; i++)
+		if (tm_wheels_infos[i].wheel_type == model)
+			twi = tm_wheels_infos + i;
 
 	if (twi)
 		hid_info(hdev, "Wheel with model id 0x%x is a %s\n", model, twi->wheel_name);
