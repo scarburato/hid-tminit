@@ -97,7 +97,7 @@ static void tminit_model_handler(struct urb *urb)
 	else if (tm_wheel->response->type == cpu_to_le16(0x47))
 		model = le16_to_cpu(tm_wheel->response->data.b.model);
 	else {
-		hid_err(hdev, "Unknow packet type 0x%x, unable to proceed further with wheel init\n", tm_wheel->response->type);
+		hid_err(hdev, "Unknown packet type 0x%x, unable to proceed further with wheel init\n", tm_wheel->response->type);
 		return;
 	}
 

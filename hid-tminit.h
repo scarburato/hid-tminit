@@ -21,7 +21,7 @@ static const unsigned int setup_arr_sizes[] = {
  * Thrustmaster wheel
  *
  * Note: The values are stored in the CPU
- * endianess, the USB protocols always use
+ * endianness, the USB protocols always use
  * little endian; the macro cpu_to_le[BIT]()
  * must be used when preparing USB packets
  * and vice-versa
