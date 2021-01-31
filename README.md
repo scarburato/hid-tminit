@@ -27,3 +27,5 @@ My new guess is the control packet with `usb.setup.bRequest == 73`, is suspiciou
 |T300 Ferrari Alcantara Edition  | 0x49000200010004021300000005010000| 0x0402|
 |TMX                             | 0x4700410000000704                | 0x0704 |
 |T500                            | 0x4700030000000200                | 0x0200 |
+
+[Original discussion](https://github.com/Kimplul/hid-tmff2/issues/3)
