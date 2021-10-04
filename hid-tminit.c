@@ -83,7 +83,7 @@ static void tminit_model_handler(struct urb *urb)
 {
 	struct hid_device *hdev = urb->context;
 	struct tm_wheel *tm_wheel = hid_get_drvdata(hdev);
-	uint16_t model = 0;
+	uint8_t model = 0;
 	int i, ret;
 	const struct tm_wheel_info *twi = 0;
 
@@ -93,20 +93,20 @@ static void tminit_model_handler(struct urb *urb)
 	}
 
 	if (tm_wheel->response->type == cpu_to_le16(0x49))
-		model = le16_to_cpu(tm_wheel->response->data.a.model);
+		model = tm_wheel->response->data.a.model;
 	else if (tm_wheel->response->type == cpu_to_le16(0x47))
-		model = le16_to_cpu(tm_wheel->response->data.b.model);
+		model = tm_wheel->response->data.b.model;
 	else {
 		hid_err(hdev, "Unknown packet type 0x%x, unable to proceed further with wheel init\n", tm_wheel->response->type);
 		return;
 	}
 
 	for (i = 0; i < tm_wheels_infos_length && !twi; i++)
-		if (tm_wheels_infos[i].wheel_type == model)
+		if (tm_wheels_infos[i].model == model)
 			twi = tm_wheels_infos + i;
 
 	if (twi)
-		hid_info(hdev, "Wheel with model id 0x%x is a %s\n", model, twi->wheel_name);
+		hid_info(hdev, "Wheel with model 0x%x is a %s\n", model, twi->wheel_name);
 	else {
 		hid_err(hdev, "Unknown wheel's model id 0x%x, unable to proceed further with wheel init\n", model);
 		return;
