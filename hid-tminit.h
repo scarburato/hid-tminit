@@ -27,7 +27,8 @@ static const unsigned int setup_arr_sizes[] = {
  * and vice-versa
  */
 struct tm_wheel_info {
-	uint16_t wheel_type;
+	uint8_t model;
+	uint8_t attachment;
 
 	/**
 	 * See when the USB control out packet is prepared...
@@ -43,14 +44,15 @@ struct tm_wheel_info {
  * Note: TMX does not work as it requires 2 control packets
  */
 static const struct tm_wheel_info tm_wheels_infos[] = {
-	{0x0306, 0x0006, "Thrustmaster T150RS"},
-	{0x0206, 0x0005, "Thrustmaster T300RS"},
-	{0x0204, 0x0005, "Thrustmaster T300 Ferrari Alcantara Edition"},
-	{0x0002, 0x0002, "Thrustmaster T500RS"},
-	{0x0407, 0x0001, "Thrustmaster TMX"}
+	{0x03, 0x06, 0x0006, "Thrustmaster T150RS"},
+	{0x02, 0x06, 0x0005, "Thrustmaster T300RS"},
+	{0x02, 0x03, 0x0005, "Thrustmaster T300RS (F1 attachment)"},
+	{0x02, 0x04, 0x0005, "Thrustmaster T300 Ferrari Alcantara Edition"},
+	{0x00, 0x02, 0x0002, "Thrustmaster T500RS"},
+	{0x04, 0x07, 0x0001, "Thrustmaster TMX"}
 };
 
-static const uint8_t tm_wheels_infos_length = 5;
+static const uint8_t tm_wheels_infos_length = 6;
 
 /**
  * This structs contains (in little endian) the response data
@@ -77,7 +79,8 @@ struct __packed tm_wheel_response
 			 * Seems to be the model code of the wheel
 			 * Read table thrustmaster_wheels to values
 			 */
-			uint16_t model;
+			uint8_t attachment;
+			uint8_t model;
 
 			uint16_t field2;
 			uint16_t field3;
@@ -87,7 +90,8 @@ struct __packed tm_wheel_response
 		struct __packed {
 			uint16_t field0;
 			uint16_t field1;
-			uint16_t model;
+			uint8_t attachment;
+			uint8_t model;
 		} b;
 	} data;
 };
