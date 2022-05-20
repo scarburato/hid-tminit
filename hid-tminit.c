@@ -65,11 +65,13 @@ struct tm_wheel_info {
  */
 static const struct tm_wheel_info tm_wheels_infos[] = {
 	{0x03, 0x06, 0x0006, "Thrustmaster T150RS"},
-	{0x02, 0x06, 0x0005, "Thrustmaster T300RS"},
+	{0x02, 0x00, 0x0005, "Thrustmaster T300RS (Missing Attachment)"},	
 	{0x02, 0x03, 0x0005, "Thrustmaster T300RS (F1 attachment)"},
+	{0x02, 0x06, 0x0005, "Thrustmaster T300RS"},
+	{0x02, 0x09, 0x0005, "Thrustmaster T300RS (Open Wheel Attachment)"},
 	{0x02, 0x04, 0x0005, "Thrustmaster T300 Ferrari Alcantara Edition"},
-	{0x00, 0x02, 0x0002, "Thrustmaster T500RS"},
-	{0x04, 0x07, 0x0001, "Thrustmaster TMX"}
+	{0x00, 0x02, 0x0002, "Thrustmaster T500RS"}
+	//{0x04, 0x07, 0x0001, "Thrustmaster TMX"}
 };
 
 static const uint8_t tm_wheels_infos_length = 6;
