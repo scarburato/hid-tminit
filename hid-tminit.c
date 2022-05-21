@@ -65,7 +65,7 @@ struct tm_wheel_info {
  */
 static const struct tm_wheel_info tm_wheels_infos[] = {
 	{0x00, 0x02, 0x0002, "Thrustmaster T500RS"},
-	{0x02, 0x00, 0x0005, "Thrustmaster T300RS (Missing Attachment)"},	
+	{0x02, 0x00, 0x0005, "Thrustmaster T300RS (Missing Attachment)"},
 	{0x02, 0x03, 0x0005, "Thrustmaster T300RS (F1 attachment)"},
 	{0x02, 0x04, 0x0005, "Thrustmaster T300 Ferrari Alcantara Edition"},
 	{0x02, 0x06, 0x0005, "Thrustmaster T300RS"},
@@ -215,7 +215,9 @@ static void thrustmaster_model_handler(struct urb *urb)
 {
 	struct hid_device *hdev = urb->context;
 	struct tm_wheel *tm_wheel = hid_get_drvdata(hdev);
-	uint16_t model = 0;
+	uint8_t model = 0;
+	uint8_t attachment = 0;
+	uint8_t attachment_found;
 	int i, ret;
 	const struct tm_wheel_info *twi = NULL;
 
@@ -224,11 +226,13 @@ static void thrustmaster_model_handler(struct urb *urb)
 		return;
 	}
 
-	if (tm_wheel->response->type == cpu_to_le16(0x49))
+	if (tm_wheel->response->type == cpu_to_le16(0x49)) {
 		model = tm_wheel->response->data.a.model;
-	else if (tm_wheel->response->type == cpu_to_le16(0x47))
+		attachment = tm_wheel->response->data.a.attachment;
+	} else if (tm_wheel->response->type == cpu_to_le16(0x47)) {
 		model = tm_wheel->response->data.b.model;
-	else {
+		attachment = tm_wheel->response->data.b.attachment;
+	} else {
 		hid_err(hdev, "Unknown packet type 0x%x, unable to proceed further with wheel init\n", tm_wheel->response->type);
 		return;
 	}
@@ -237,9 +241,16 @@ static void thrustmaster_model_handler(struct urb *urb)
 		if (tm_wheels_infos[i].model == model)
 			twi = tm_wheels_infos + i;
 
-	if (twi)
-		hid_info(hdev, "Wheel with model id 0x%x is a %s\n", model, twi->wheel_name);
-	else {
+	if (twi) {
+		// Trying to find the best attachment
+		for (attachment_found = twi->attachment == attachment; !attachment_found && i < tm_wheels_infos_length && tm_wheels_infos[i].model == model; i++)
+			if (tm_wheels_infos[i].attachment == attachment) {
+				twi = tm_wheels_infos + i;
+				attachment_found = 1;
+			}
+
+		hid_info(hdev, "Wheel with (model, attachment) = (0x%x, 0x%x) is a %s. attachment_found=%u\n", model, attachment, twi->wheel_name, attachment_found);
+	} else {
 		hid_err(hdev, "Unknown wheel's model id 0x%x, unable to proceed further with wheel init\n", model);
 		return;
 	}
