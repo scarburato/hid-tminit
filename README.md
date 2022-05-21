@@ -12,7 +12,7 @@ This driver tries to understand which model of Thrustmaster wheel the generic
 `Thrustmaster FFB Wheel` really is and then sends the appropriate control code.
 
 ## Wheels supported
-You can check the table of wheels supported in `hid-tminit.h`, they are stored in the array `th_wheels_infos[]`
+You can check the table of wheels supported in `hid-tminit.c`, they are stored in the array `th_wheels_infos[]`
 
 ## Recapitulatory table
 This table may be outdated.
