@@ -74,7 +74,7 @@ static const struct tm_wheel_info tm_wheels_infos[] = {
 	//{0x04, 0x07, 0x0001, "Thrustmaster TMX"}
 };
 
-static const uint8_t tm_wheels_infos_length = 6;
+static const uint8_t tm_wheels_infos_length = 7;
 
 /*
  * This structs contains (in little endian) the response data
